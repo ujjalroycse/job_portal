@@ -29,5 +29,6 @@ Route::get('account/login', [AccountController::class, 'accountLogin']);
 Route::post('account/login', [AccountController::class, 'userLogin'])->name('login');
 Route::get('account/logout', [AccountController::class, 'logout']);
 
-Route::get('account/profile', [AccountController::class, 'profile'])->name('user.profile');
+Route::get('account/profile', [AccountController::class, 'profile']);
+Route::put('user/update/{id}', [AccountController::class, 'userUpdate'])->name('update');
 

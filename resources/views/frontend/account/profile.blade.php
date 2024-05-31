@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('main')
+{{-- {{ dd($user->id) }} --}}
     <section class="section-5 bg-2">
         <div class="container py-5">
             <div class="row">
@@ -16,10 +17,10 @@
                 <div class="col-lg-3">
                     <div class="card border-0 shadow mb-4 p-3">
                         <div class="s-body text-center mt-3">
-                            <img src="assets/assets/images/avatar7.png" alt="avatar" class="rounded-circle img-fluid"
+                            <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
                                 style="width: 150px;">
-                            <h5 class="mt-3 pb-0">{{ Auth::user()->name }}</h5>
-                            <p class="text-muted mb-1 fs-6">Full Stack Developer</p>
+                            <h5 class="mt-3 pb-0">{{ $user->name }}</h5>
+                            <p class="text-muted mb-1 fs-6">{{ $user->designation }}</p>
                             <div class="d-flex justify-content-center mb-2">
                                 <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button"
                                     class="btn btn-primary">Change Profile Picture</button>
@@ -53,28 +54,38 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="card border-0 shadow mb-4">
-                        <form action="" method="post">
+                        <form action="{{ route('update',[ $user->id]) }}" method="post">
+                            @csrf
+                            @method('PUT')
                             <div class="card-body  p-4">
+                                @if (Session('success'))
+                                    <div class="alert alert-success">
+                                        {{ Session('success') }}
+                                    </div>
+                                @endif
                                 <h3 class="fs-4 mb-1">My Profile</h3>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Name*</label>
-                                    <input type="text" name="name" placeholder="Enter Name" class="form-control" value="">
+                                    <input type="text" name="name" value="{{ $user->name }}" placeholder="Enter Name" class="form-control" value="">
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Email*</label>
-                                    <input type="email" name="email" placeholder="Enter Email" class="form-control">
+                                    <input type="email" name="email" readonly value="{{ $user->email }}" placeholder="Enter Email" class="form-control">
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Designation*</label>
-                                    <input type="text" name="designation" placeholder="Designation" class="form-control">
+                                    <input type="text" name="designation" value="{{ $user->designation }}" placeholder="Designation" class="form-control">
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Mobile*</label>
-                                    <input type="text" name="mobile" placeholder="Mobile" class="form-control">
+                                    <input type="text" name="mobile" value="{{ $user->mobile }}" placeholder="Mobile" class="form-control">
+                                    @error('mobile')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="card-footer  p-4">
-                                <button type="button" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>
@@ -103,4 +114,27 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title pb-0" id="exampleModalLabel">Change Profile Picture</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                  <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Profile Image</label>
+                      <input type="file" class="form-control" id="image"  name="image">
+                  </div>
+                  <div class="d-flex justify-content-end">
+                      <button type="submit" class="btn btn-primary mx-3">Update</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                  
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 @endsection

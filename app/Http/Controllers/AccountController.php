@@ -25,8 +25,8 @@ class AccountController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-
         ]);
+        return redirect('account/login');
     }
 
     public function accountLogin(){
@@ -51,6 +51,30 @@ class AccountController extends Controller
     }
 
     public function profile(){
-        return view('frontend.account.profile');
+        $id = Auth::user()->id;
+        $user = user::where('id',$id)->first();
+        return view('frontend.account.profile', [
+            'user' => $user
+        ]);
+    }
+
+    //Update Profile
+    public function userUpdate(Request $request,$id){
+        // dd($request->all());
+        $id = Auth::user()->id;
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'designation' => 'nullable',
+            'mobile' => ['nullable','size:11','unique:users,mobile,' . $id],
+            // 'password' => 'required|confirmed|min:6'
+        ]);
+        user::where('id', $id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'designation' => $request->designation,
+            'mobile' => $request->mobile,
+        ]);
+        return back()->with('success', 'Update successfull');
     }
 }
