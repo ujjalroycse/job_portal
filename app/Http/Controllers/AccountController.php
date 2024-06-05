@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\JobType;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -76,5 +78,33 @@ class AccountController extends Controller
             'mobile' => $request->mobile,
         ]);
         return back()->with('success', 'Update successfull');
+    }
+    //Image Update
+    public function userImageUpdate(Request $request){
+        // dd($request->all());
+        // $request -> validate([
+        //     'image' => ['nullable','mimes:png,jpg,svg','max:50000']
+        // ]);
+        // // if(!isset($request->image)){
+        //     $imageName = time().'.'.$request->image->extension();
+        //     $request->image->move(public_path('assets/images/profileimage'), $imageName);
+        //     // }
+        //     user::where('id', $id)->update([
+        //         'image' => $request->image,
+        //     ]);
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('assets/images/profileimage'), $imageName);
+        
+        $user = new User;
+        $user->image = $imageName;
+        
+        return back();
+    }
+
+    //Job Create
+    public function jobCreate(){
+        $categories = Category::orderBy('name','asc')->where('status',1)->get();
+        $job_types = JobType::orderBy('name')->where('status',1)->get();
+        return view('frontend.account.job.create', compact('categories'), compact('job_types'));
     }
 }
