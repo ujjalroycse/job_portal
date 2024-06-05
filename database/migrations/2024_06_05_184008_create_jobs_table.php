@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->onDelete('casecode');
             $table->foreignId('job_type_id')->constrained()->onDelete('casecode');
             $table->integer('vacancy');
@@ -28,6 +29,8 @@ return new class extends Migration
             $table->string('company_name');
             $table->string('company_location')->nullable();
             $table->string('company_website')->nullable();
+            $table->integer('status')->default(1);
+            $table->integer('is_featured')->default(0);
             $table->timestamps();
         });
     }
@@ -39,4 +42,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('jobs');
     }
+      
 };

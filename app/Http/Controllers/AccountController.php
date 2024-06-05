@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\JobType;
+use App\Models\Job;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -22,13 +23,12 @@ class AccountController extends Controller
             'email' => 'required|unique:users,email',
             'password' => 'required|confirmed|min:6'
         ]);
-        
         user::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return redirect('account/login');
+        return redirect('login');
     }
 
     public function accountLogin(){
@@ -41,15 +41,16 @@ class AccountController extends Controller
     //User Login
     public function userLogin(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password ])){
-           return redirect('account/profile');
+           return redirect('profile');
         }
         else{
             return back()->with('error', 'User name or password is wrong!!');
         }
     }
+
     public function logout(){
         Auth::logout();
-        return redirect('account/login');
+        return redirect('login');
     }
 
     public function profile(){
@@ -62,7 +63,6 @@ class AccountController extends Controller
 
     //Update Profile
     public function userUpdate(Request $request,$id){
-        // dd($request->all());
         $id = Auth::user()->id;
         $request->validate([
             'name' => 'required',
@@ -94,10 +94,8 @@ class AccountController extends Controller
         //     ]);
         $imageName = time().'.'.$request->image->extension();
         $request->image->move(public_path('assets/images/profileimage'), $imageName);
-        
         $user = new User;
         $user->image = $imageName;
-        
         return back();
     }
 
@@ -107,4 +105,36 @@ class AccountController extends Controller
         $job_types = JobType::orderBy('name')->where('status',1)->get();
         return view('frontend.account.job.create', compact('categories'), compact('job_types'));
     }
+    //Jobs Data Insert
+    public function createJob(Request $request){
+        // return $request->all();
+        $request->validate([
+            'title' => 'required',
+            'category' => 'required',
+            'job_type' => 'required',
+            'vacancy' => 'required',
+            'location' => 'required',
+            'description' => 'required',
+            'exprience' => 'required',
+            'company_name' => 'required',
+        ]); 
+        Job::create([
+            'title'=> $request->title,
+            'user_id'=> Auth::user()->id,
+            'category_id'=> $request->category,
+            'job_type_id'=> $request->job_type,
+            'vacancy'=> $request->vacancy,
+            'location'=> $request->location,
+            'description'=> $request->description,
+            'exprience'=> $request->exprience,
+            'company_name'=>$request->company_name,
+        ]);
+        return back()->with('success','Job Create Successfull...');
+    }
+    //My Job page
+    public function myjobs(){
+        $jobs = Job::where('user_id', Auth::user()->id)->with('jobType')->paginate(10);
+        return view('frontend.account.job.myjobs', compact('jobs'));
+    }
+
 }

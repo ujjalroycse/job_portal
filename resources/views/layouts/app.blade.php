@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en_AU" />
+<html class="no-js" lang="en_AU" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>CareerVibe | Find Best Jobs</title>
@@ -30,9 +30,9 @@
 					</li>										
 				</ul>			
 				@if (Auth::check())
-					<a class="btn btn-outline-primary me-2" href="{{ url('account/profile') }}" >Account</a>
+					<a class="btn btn-outline-primary me-2" href="{{ route('profile') }}" >Account</a>
 					@else
-					<a class="btn btn-outline-primary me-2" href="{{ url('account/login') }}" >Login</a>
+					<a class="btn btn-outline-primary me-2" href="{{ route('login') }}" >Login</a>
 				@endif
 				<a class="btn btn-primary" href="post-job.html" >Post a Job</a>
 			</div>

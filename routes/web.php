@@ -23,24 +23,30 @@ use App\Http\Controllers\AccountController;
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
 
-Route::group(['account'], function(){
+Route::group(['account/'], function(){
     //Guest Route
     Route::group(['middleware' => 'guest'], function(){
         //Registration
-        Route::get('account/registration', [AccountController::class, 'acountRegistration'])->name('user.registration');
+        Route::get('/registration', [AccountController::class, 'acountRegistration'])->name('user.registration');
         Route::post('users/register', [AccountController::class, 'userRegister'])->name('registration');
-        //Login And Logout
-        Route::get('account/login', [AccountController::class, 'accountLogin']);
-        Route::post('account/login', [AccountController::class, 'userLogin'])->name('login');
+        //Login 
+        Route::get('/login', [AccountController::class, 'accountLogin']);
+        Route::post('/login', [AccountController::class, 'userLogin'])->name('login');
     });
     //Auth Route
     Route::group(['middleware'=> 'auth'], function(){
-        Route::get('account/logout', [AccountController::class, 'logout']);
-        Route::get('account/profile', [AccountController::class, 'profile'])->name('profile');
+        //Logout
+        Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
+        //Profile
+        Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
         Route::put('user/update/{id}', [AccountController::class, 'userUpdate'])->name('update');
+        //Update Profile Image
         Route::post('user/update/image', [AccountController::class, 'userImageUpdate'])->name('image.update');
-
-        Route::get('account/job/create', [AccountController::class, 'jobCreate'])->name('account.createJob');
+        //Jobs Create
+        Route::get('/job/create', [AccountController::class, 'jobCreate'])->name('account.createJob');
+        Route::post('job/create', [AccountController::class,'createJob'])->name('createJob');
+        //My Job
+        Route::get('job/myjobs', [AccountController::class, 'myJobs'])->name('myjobs');
     });
 });
 

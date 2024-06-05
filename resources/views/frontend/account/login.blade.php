@@ -13,7 +13,7 @@
                                 {{ Session('error') }}
                             </div>
                         @endif
-                        <form action="{{ url('account/login') }}" method="post">
+                        <form action="{{ route('login') }}" method="post">
                             @csrf
                             <div class="mb-3">
                                 <label for="" class="mb-2">Email*</label>
@@ -32,7 +32,7 @@
                         </form>
                     </div>
                     <div class="mt-4 text-center">
-                        <p>Do not have an account? <a href="{{ url('account/registration') }}">Register</a></p>
+                        <p>Do not have an account? <a href="{{ route('user.registration') }}">Register</a></p>
                     </div>
                 </div>
             </div>
