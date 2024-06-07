@@ -48,7 +48,7 @@
                                                         <div class="job-name fw-500">{{ $job->title }}</div>
                                                         <div class="info1">{{ $job->jobType->name }} . {{ $job->location }}</div>
                                                     </td>
-                                                    <td>{{ date('d M, Y') }}</td>
+                                                    <td>{{ date('d M, Y', strtotime($job->created_at)) }}</td>
                                                     <td>0 Applications</td>
                                                     <td>
                                                         @if ($job->status==1)
@@ -59,15 +59,15 @@
                                                     </td>
                                                     <td>
                                                         <div class="action-dots float-end">
-                                                            <a href="#" class="" data-bs-toggle="dropdown"
+                                                            <a href="#" class="btn text-success" data-bs-toggle="dropdown"
                                                                 aria-expanded="false">Action 
                                                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                             </a>
                                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                                <li><a class="dropdown-item" href="job-detail.html"> <i
+                                                                <li><a class="dropdown-item" href="{{ route('job.details',$job->id) }}"> <i
                                                                             class="fa fa-eye" aria-hidden="true"></i>
                                                                         View</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
+                                                                <li><a class="dropdown-item" href="{{ route('editJob',$job->id) }}"><i
                                                                             class="fa fa-edit" aria-hidden="true"></i>
                                                                         Edit</a></li>
                                                                 <li><a class="dropdown-item" href="#"><i

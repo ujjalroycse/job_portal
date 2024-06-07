@@ -47,6 +47,10 @@ Route::group(['account/'], function(){
         Route::post('job/create', [AccountController::class,'createJob'])->name('createJob');
         //My Job
         Route::get('job/myjobs', [AccountController::class, 'myJobs'])->name('myjobs');
+        Route::get('job/editjobs/{id}', [AccountController::class, 'editJob'])->name('editJob');
+        Route::put('job/updatejob/{id}', [AccountController::class,'updateJob'])->name('updateJob');
+        //Job Details
+        Route::get('job/job-details/{id}', [AccountController::class,'jobDetails'])->name('job.details');
     });
 });
 

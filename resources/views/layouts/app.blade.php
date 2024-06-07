@@ -34,7 +34,7 @@
 					@else
 					<a class="btn btn-outline-primary me-2" href="{{ route('login') }}" >Login</a>
 				@endif
-				<a class="btn btn-primary" href="post-job.html" >Post a Job</a>
+				<a class="btn btn-primary" href="{{ route('createJob') }}" >Post a Job</a>
 			</div>
 		</div>
 	</nav>

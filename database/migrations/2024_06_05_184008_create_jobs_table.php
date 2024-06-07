@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('benefits')->nullable();
             $table->text('responsibility')->nullable();
-            $table->text('qualificatiions')->nullable();
+            $table->text('qualifications')->nullable();
             $table->text('keywords')->nullable();
             $table->string('exprience')->nullable();
             $table->string('company_name');
