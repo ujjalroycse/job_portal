@@ -45,9 +45,6 @@
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
-                                                {{-- @error('category')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror --}}
                                             @endif
                                         </select>
                                     </div>
@@ -62,9 +59,6 @@
                                                 @foreach ($job_types as $job_type)
                                                     <option value="{{ $job_type->id }}">{{ $job_type->name }}</option>
                                                 @endforeach
-                                                {{-- @error('job_type')
-                                                <p class="text-danger">{{ $message }}</p>
-                                                @enderror --}}
                                             @endif
                                         </select>
                                     </div>
@@ -167,4 +161,5 @@
             </div>
         </div>
     </section>
+    @include('frontend.account.modal')
 @endsection

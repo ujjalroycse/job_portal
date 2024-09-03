@@ -41,7 +41,7 @@ Route::group(['account/'], function(){
         Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
         Route::put('user/update/{id}', [AccountController::class, 'userUpdate'])->name('update');
         //Update Profile Image
-        Route::post('user/update/image', [AccountController::class, 'userImageUpdate'])->name('image.update');
+        Route::post('user/upload/image/{id}', [AccountController::class, 'userImageUpdate'])->name('image.update');
         //Jobs Create
         Route::get('/job/create', [AccountController::class, 'jobCreate'])->name('account.createJob');
         Route::post('job/create', [AccountController::class,'createJob'])->name('createJob');
@@ -51,6 +51,8 @@ Route::group(['account/'], function(){
         Route::put('job/updatejob/{id}', [AccountController::class,'updateJob'])->name('updateJob');
         //Job Details
         Route::get('job/job-details/{id}', [AccountController::class,'jobDetails'])->name('job.details');
+        //Job Delete
+        Route::get('job/delete/{id}', [AccountController::class, 'deleteJob'])->name('deleteJob');
     });
 });
 

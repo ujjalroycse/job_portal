@@ -101,4 +101,5 @@
         </div>
     </div>
 </section>
+@include('frontend.account.modal')
 @endsection

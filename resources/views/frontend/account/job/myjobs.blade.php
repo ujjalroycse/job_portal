@@ -27,8 +27,12 @@
                                 <div style="margin-top: -10px;">
                                     <a href="{{ route('createJob') }}" class="btn btn-primary">Post a Job</a>
                                 </div>
-
                             </div>
+                            @if (Session('success'))
+                                    <div class="alert alert-info">
+                                        {{ Session('success') }}
+                                    </div>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table ">
                                     <thead class="bg-light">
@@ -70,9 +74,9 @@
                                                                 <li><a class="dropdown-item" href="{{ route('editJob',$job->id) }}"><i
                                                                             class="fa fa-edit" aria-hidden="true"></i>
                                                                         Edit</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
+                                                                <li><a class="dropdown-item" onclick="return confirm('Are you sure?') " href="{{ route('deleteJob',$job->id) }}"><i
                                                                             class="fa fa-trash" aria-hidden="true"></i>
-                                                                        Remove</a></li>
+                                                                        Delete</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -91,4 +95,5 @@
             </div>
         </div>
     </section>
+    @include('frontend.account.modal')
 @endsection

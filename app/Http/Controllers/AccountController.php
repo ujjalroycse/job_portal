@@ -80,23 +80,22 @@ class AccountController extends Controller
         return back()->with('success', 'Update successfull');
     }
     //Image Update
-    public function userImageUpdate(Request $request){
-        // dd($request->all());
-        // $request -> validate([
-        //     'image' => ['nullable','mimes:png,jpg,svg','max:50000']
-        // ]);
-        // // if(!isset($request->image)){
-        //     $imageName = time().'.'.$request->image->extension();
-        //     $request->image->move(public_path('assets/images/profileimage'), $imageName);
-        //     // }
-        //     user::where('id', $id)->update([
-        //         'image' => $request->image,
-        //     ]);
-        $imageName = time().'.'.$request->image->extension();
-        $request->image->move(public_path('assets/images/profileimage'), $imageName);
-        $user = new User;
-        $user->image = $imageName;
-        return back();
+    public function userImageUpdate(Request $request, $id){
+        $id = Auth::user()->id;
+        $request->validate([
+            'image' => 'nullable|mimes:png,jpg,svg|'
+        ]);
+        if($request->has('image')){
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() .'.'. $extension;
+            $path = 'assets/images/profileimage/';
+            $file->move($path, $filename);
+        }
+        user::where('id', $id)->update([
+            'image' => $path.$filename,
+        ]);
+        return back()->with('success', 'Image Upload successfully..');
     }
 
     //Job Create
@@ -139,7 +138,7 @@ class AccountController extends Controller
     }
     //My Job page
     public function myjobs(){
-        $jobs = Job::where('user_id', Auth::user()->id)->with('jobType')->paginate(10);
+        $jobs = Job::where('user_id', Auth::user()->id)->with('jobType')->orderBy('created_at','desc')->paginate(10);
         return view('frontend.account.job.myjobs', compact('jobs'));
     }
     //Edit Job
@@ -186,8 +185,12 @@ class AccountController extends Controller
         // $categories = Category::orderBy('name','asc')->where('status',1)->get();
         $job_types = JobType::orderBy('name')->where('status',1)->get();
         $job = Job::find($id);
-        // return($job);
         return view('frontend.account.job.detailsjobs', compact('job','job_types'));
+    }
+
+    public function deleteJob($id){
+        Job::where('id',$id)->delete();
+        return back()->with('success','Job Delete Successfully..');
     }
 
 }
